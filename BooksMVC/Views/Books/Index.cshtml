@@ -1,7 +1,50 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model BooksMVC.Models.Books.GetBooksResponseModel
+<h2> out huge book selelction</h2>
+
+<ul class="list-unstyled">
+    @foreach (var book in Model.Books)
+    {
+        <li>@book.Title by @book.Author <a asp-controller="Books" asp-action="Details" asp-route-bookid="@book.Id">Details</a></li>
+    }
+</ul>
+@*<div class="alert alert-info">
+        <p>There are @Model.NumberOfBooksInInventory books in inventory
+        (we have @Model.NumberOfBooksNotInInventory currently out)</p>
+    </div>*@
+@if (Model.BooksNotInInventory != null)
+{
+    <h3>The following books are not in Inventory</h3>
+    <ul class="list-unstyled">
+        @foreach (var book in Model.BooksNotInInventory)
+        {
+            <li>@book.Title by @book.Author <a asp-controller="Books" asp-action="Details" asp-route-bookId="@book.Id">Details</a></li>
+        }
+    </ul>
+}
+<div class="alert alert-info">
+    <p>
+        @Model.NumberOfBooksInInventory in inventory
+        @Model.NumberOfBooksNotInInventory NOT in inventory
+    </p>
+</div>
+
 @{
+    bool DisableShowOnlyInINventory = Model.BooksNotInInventory == null;
+    bool DisableShowAll = Model.BooksNotInInventory != null;
 }
 
-<h2> out huge book selelction</h2>
+<div class="btn-group" role="group" aria-label="Filtering">
+    @if (DisableShowAll)
+    {
+        <a asp-controller="Books" asp-action="Index" asp-route-showall="false" class="btn btn-secondary">Show Only In Inventory</a>
+    }
+    @if (DisableShowOnlyInINventory)
+    {
+        <a asp-controller="Books" asp-action="Index" asp-route-showall="true" class="btn btn-secondary">Show Both In and Out Of Inventory</a>
+    }
+</div>
+
+<div>
+    <a disabled="true" href="Microsoft.com">Microsoft</a>
+    <button disabled>Click ME</button>
+</div>
