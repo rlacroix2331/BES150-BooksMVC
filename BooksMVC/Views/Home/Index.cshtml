@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "My Home Page";
+}
+<h1>this works for me to refresh</h1>
+@{
+    //csharp code
+    var words = new List<string> { "Dog", "Cat", "Mouse" };
+    var age = 40;
+}
+<ul>
+    @foreach (var word in words)
+    {
+        <li>@word</li>
+    }
+</ul>
+
+@if (age >= 21)
+{
+    <h3>You are old enough for beer</h3>
+}
+else
+{
+    <h3> too young, have some juice</h3>
+}
