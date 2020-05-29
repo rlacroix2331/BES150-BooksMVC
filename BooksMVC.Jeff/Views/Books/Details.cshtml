@@ -1,0 +1,27 @@
+﻿@model BooksMVC.Models.Books.GetSingleBookResponseModel
+
+<h3>Details for @Model.Title</h3>
+
+<div>
+    <label asp-for="Title"></label>&nbsp; <span>@Model.Title</span>
+</div>
+<div>
+    <label asp-for="Author"></label>&nbsp; <span>@Model.Author</span>
+</div>
+<div>
+    <label asp-for="NumberOfPages"></label>&nbsp; <span>@Model.NumberOfPages</span>
+</div>
+<div>
+    <label asp-for="InInventory"></label>&nbsp; <span>@Model.InInventory</span>
+</div>
+<div>
+    <a class="btn btn-primary" asp-controller="Books" asp-action="Index">Back To List</a>
+    <a class="btn btn-primary"
+       asp-controller="Books"
+       asp-action="Edit"
+       asp-route-id="@Model.Id">Edit @Model.Title</a>
+    <form method="post" asp-controller="Books" asp-action="RemoveFromInventory">
+        <input type="hidden" value="@Model.Id" name="bookId" />
+        <input type="submit" value="Remove From Inventory" class="btn btn-primary" />
+    </form>
+</div>

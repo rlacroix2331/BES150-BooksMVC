@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Data.Entity;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using BooksMVC.Domain;
 using BooksMVC.Models.Books;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+
 
 namespace BooksMVC.Controllers
 {
@@ -19,16 +19,8 @@ namespace BooksMVC.Controllers
         {
             _dataContext = dataContext;
         }
-        [HttpPost]
-        public async Task<IActionResult> RemoveFromInventory(int bookId)
-        {
-            var book = await _dataContext.Books.SingleOrDefaultAsync(b => b.Id == bookId);
-            book.InInventory = false;
-            await _dataContext.SaveChangesAsync();
-            TempData["flash"] = $"Removed {book.Title} from inventory.";
-            return RedirectToAction("Index");
-        }
 
+        
         public async Task<IActionResult> Edit(int id)
         {
             // TODO:If it isn't there, send a 404
@@ -39,10 +31,9 @@ namespace BooksMVC.Controllers
                     Title = b.Title,
                     Author = b.Author,
                     NumberOfPages = b.NumberOfPages,
-                    PublicationDate = new DateTime(1969, 4, 20)
+                    PublicationDate = new DateTime(1969,4,20)
                 })
-                .SingleOrDefaultAsync(b => b.Id == id)
-                ;
+                .SingleOrDefaultAsync(b => b.Id == id);
 
             return View(bookToEdit);
         }
@@ -62,23 +53,25 @@ namespace BooksMVC.Controllers
                 storedBook.NumberOfPages = editedBook.NumberOfPages;
                 await _dataContext.SaveChangesAsync();
                 TempData["flash"] = "Updated your book";
-                return RedirectToAction("index");
+                return RedirectToAction("index");                    
             }
         }
 
         public IActionResult New()
         {
-            return View(new BookCreate());//return view to add a new book
+
+            return View(new BookCreate());
         }
+
         [HttpPost("/books")]
         public async Task<IActionResult> Create(BookCreate bookToAdd)
         {
-            if (!ModelState.IsValid)
+            if(!ModelState.IsValid)
             {
                 return View("New", bookToAdd);
-            }
-            else
+            } else
             {
+                // add it to the database and stuff. TODO
                 var book = new Book
                 {
                     Title = bookToAdd.Title,
@@ -88,16 +81,16 @@ namespace BooksMVC.Controllers
                 };
                 _dataContext.Books.Add(book);
                 await _dataContext.SaveChangesAsync();
-                ViewData["flash"] = $"Book {book.Title} add as {book.Id}";
-                return View("New", new BookCreate());//PRG post redirect get
+                TempData["flash"] = $"Book {book.Title} add as {book.Id}";
+                return RedirectToAction("New"); // PRG
             }
         }
+
         [HttpGet("/books/{bookId:int}")]
         public async Task<IActionResult> Details(int bookId)
         {
-            
             var response = await _dataContext.Books.Where(b => b.Id == bookId)
-                .Select(b => new GetSingleBookResponseModel
+                .Select(b=> new GetSingleBookResponseModel
                 {
                     Id = b.Id,
                     Title = b.Title,
@@ -106,24 +99,24 @@ namespace BooksMVC.Controllers
                     NumberOfPages = b.NumberOfPages
                 })
                 .SingleOrDefaultAsync();
-            if (response == null)
+            if(response == null)
             {
-                return NotFound("No Book with that ID");
-            }
-            else
+                return NotFound("No Book with that Id");
+            } else
             {
                 return View(response);
             }
         }
-        //GET /books
-        //GET /books/index
-        //GET
+
+        // GET /books
+        // GET /books/index
+        // GET /books?showall=true
         public async Task<IActionResult> Index([FromQuery] bool showall = false)
         {
-            //no model, just serilizing the domain objextsvart
+            //// NO Model. just serializing the domain objects.
             //var response = await _dataContext.Books.Where(b => b.InInventory).ToListAsync();
             //return View(response);
-            ViewData["sale"] = "all books on sale";
+            ViewData["sale"] = "All Books are 20% Off Until Friday";
             var response = new GetBooksResponseModel
             {
                 Books = await _dataContext.Books.Where(b => b.InInventory).Select(b => new BooksResponseItemModel
@@ -135,7 +128,7 @@ namespace BooksMVC.Controllers
                 NumberOfBooksInInventory = await _dataContext.Books.CountAsync(b => b.InInventory),
                 NumberOfBooksNotInInventory = await _dataContext.Books.CountAsync(b => b.InInventory == false)
             };
-            if (showall)
+            if(showall)
             {
                 response.BooksNotInInventory = await _dataContext.Books.Where(b => b.InInventory == false)
                     .Select(b => new BooksResponseItemModel
