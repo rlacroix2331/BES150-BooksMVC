@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BooksMVC", "BooksMVC\BooksM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BooksMVC.Jeff", "BooksMVC.Jeff\BooksMVC.Jeff.csproj", "{15EC63EA-AC0E-4F3C-B65B-FB72A2E1375E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StrengthMVC", "StrengthMVC\StrengthMVC.csproj", "{F9D2A0C4-D3E8-4B16-852F-415B6FA50184}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{15EC63EA-AC0E-4F3C-B65B-FB72A2E1375E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15EC63EA-AC0E-4F3C-B65B-FB72A2E1375E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15EC63EA-AC0E-4F3C-B65B-FB72A2E1375E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D2A0C4-D3E8-4B16-852F-415B6FA50184}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D2A0C4-D3E8-4B16-852F-415B6FA50184}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D2A0C4-D3E8-4B16-852F-415B6FA50184}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D2A0C4-D3E8-4B16-852F-415B6FA50184}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

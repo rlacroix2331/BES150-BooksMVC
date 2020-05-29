@@ -20,7 +20,15 @@ namespace BooksMVC.Controllers
             _dataContext = dataContext;
         }
 
-        
+        [HttpPost]
+        public async Task<IActionResult> RemoveFromInventory(int bookId)
+        {
+            var book = await _dataContext.Books.SingleOrDefaultAsync(b => b.Id == bookId);
+            book.InInventory = false;
+            await _dataContext.SaveChangesAsync();
+            TempData["flash"] = $"Removed {book.Title} from inventory.";
+            return RedirectToAction("Index");
+        }
         public async Task<IActionResult> Edit(int id)
         {
             // TODO:If it isn't there, send a 404
