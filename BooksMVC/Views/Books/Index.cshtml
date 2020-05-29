@@ -1,6 +1,11 @@
 ﻿@model BooksMVC.Models.Books.GetBooksResponseModel
 <h2> out huge book selelction</h2>
-
+@if(ViewData["sale"] != null)
+{
+    <div class="alert alert-success">
+        <h3>@ViewData["Flash"]</h3>
+    </div>
+}
 <ul class="list-unstyled">
     @foreach (var book in Model.Books)
     {
